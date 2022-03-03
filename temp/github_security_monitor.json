@@ -1,0 +1,1 @@
+{"h2database-h2database": [{"text": "RCE in H2 Console", "url": "https://github.com//h2database/h2database/security/advisories/GHSA-h376-j262-vhq6"}], "protocolbuffers-protobuf": [{"text": "A potential Denial of Service issue in protobuf-java", "url": "https://github.com//protocolbuffers/protobuf/security/advisories/GHSA-wrvw-hg22-4m67"}]}
