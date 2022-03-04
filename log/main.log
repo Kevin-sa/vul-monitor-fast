@@ -1,0 +1,11 @@
+22-03-04 10:00 - INFO - main.py - main - Threat intelligence start
+22-03-04 10:00 - INFO - github_commit_monitor.py - do_business - do_business start
+22-03-04 10:00 - INFO - monitor.py - after_business - get warn_result:{'rule': 'Github-commit', 'apache-kafka': [{'message': '(docs) Add JavaDocs for org.apache.kafka.common.security.oauthbearer.secured (#11811)\n\nReviewers:  Luke Chen <showuon@confluent.io>, Jun Rao <junrao@gmail.com>', 'url': 'https://github.com/apache/kafka/commit/f5d8fb2b0bf2049800fd7745ac0e2c7e239dce68'}]}
+22-03-04 10:00 - INFO - send_telebot.py - send_message - send message
+22-03-04 10:00 - INFO - github_issue_monitor.py - do_business - do_business start
+22-03-04 10:00 - INFO - github_security_monitor.py - do_business - do_business start
+22-03-04 10:00 - INFO - jira_apache_monitor.py - do_business - do_business start
+22-03-04 10:01 - ERROR - jira_apache_monitor.py - do_business - resp.status_code error:404
+22-03-04 10:01 - ERROR - jira_apache_monitor.py - do_business - resp.status_code error:404
+22-03-04 10:01 - INFO - oracle_monitor.py - do_business - do_business start
+22-03-04 10:01 - INFO - main.py - main - Threat intelligence end

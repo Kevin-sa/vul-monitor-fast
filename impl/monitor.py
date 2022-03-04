@@ -34,6 +34,8 @@ class Monitor(metaclass=ABCMeta):
             'common': '(security|cve-|vulnerabilities|security)',
             'java': '(security|cve-|jndi|ldap|injection| xxe |sqli|rce |ssrf|vulnerabilities|security)'
         }
+        self.headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, '
+                                      'like Gecko) Chrome/99.0.4844.51 Safari/537.36'}
         self.project_file = dirname(__file__)[:-4]
 
     @abstractmethod

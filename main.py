@@ -7,6 +7,7 @@ import logging
 from impl.github_security_monitor import GithubSecurityMonitor
 from impl.jira_apache_monitor import JiraApacheMonitor
 from impl.oracle_monitor import OracleMonitor
+from impl.vmware_security_monitor import VMwareSecurityMonitor
 
 
 def main():
@@ -20,7 +21,7 @@ def main():
         return
     try:
         monitor_temp = [GithubCommitMonitor, GithubIssueMonitor, GithubSecurityMonitor, JiraApacheMonitor,
-                        OracleMonitor]
+                        OracleMonitor, VMwareSecurityMonitor]
         for temp in monitor_temp:
             temp().execute()
     except Exception as e:
