@@ -31,7 +31,7 @@ class JiraApacheMonitor(Monitor):
                 issue_key = "{}-{}".format(temp, value.get("id") + i)
                 resp = self.request.request(self.url.format(issueKey=issue_key))
                 if resp.status_code != 200:
-                    primary_conf[temp]['id'] += i
+                    primary_conf[temp]['id'] += i - 1
                     logging.error("resp.status_code error:{}".format(resp.status_code))
                     break
                 result = resp.json()
