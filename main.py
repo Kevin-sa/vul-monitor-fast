@@ -19,13 +19,13 @@ def main():
     logging.info("Threat intelligence start")
     if check_target_network is False:
         return
-    try:
-        monitor_temp = [GithubCommitMonitor, GithubIssueMonitor, GithubSecurityMonitor, JiraApacheMonitor,
-                        OracleMonitor, VMwareSecurityMonitor]
-        for temp in monitor_temp:
+    monitor_temp = [GithubCommitMonitor, GithubIssueMonitor, GithubSecurityMonitor, JiraApacheMonitor,
+                    OracleMonitor, VMwareSecurityMonitor]
+    for temp in monitor_temp:
+        try:
             temp().execute()
-    except Exception as e:
-        logging.error("main execute error", e)
+        except Exception as e:
+            logging.error(f"{temp.__name__} execute error: {e}")
     logging.info("Threat intelligence end")
 
 

@@ -1,6 +1,5 @@
 import logging
 import re
-import requests
 
 from impl.monitor import Monitor
 from utils.date_utils import utc_date_compare_now_day
@@ -23,8 +22,8 @@ class GithubCommitMonitor(Monitor):
 
         warn_result = {'rule': self.rule}
         for temp in self.github_repos:
-            resp = requests.get(url=self.url.format(user=temp.get('user'), repo=temp.get('repo')),
-                                headers={'Authorization': self.github_authorization})
+            resp = self.request.request(url=self.url.format(user=temp.get('user'), repo=temp.get('repo')),
+                                        headers={'Authorization': self.github_authorization})
             if resp.status_code != 200:
                 logging.error("resp.status_code error:{}, user:{}, repo:{}".format(
                     resp.status_code, temp.get('user', ''), temp.get('repo', '')))

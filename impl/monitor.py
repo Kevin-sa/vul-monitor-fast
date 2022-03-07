@@ -1,6 +1,7 @@
 import logging
 from abc import ABCMeta, abstractmethod
 
+from utils.requests_utils import Request
 from utils.send_telebot import SendTelebot
 from os.path import dirname
 
@@ -37,6 +38,7 @@ class Monitor(metaclass=ABCMeta):
         self.headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, '
                                       'like Gecko) Chrome/99.0.4844.51 Safari/537.36'}
         self.project_file = dirname(__file__)[:-4]
+        self.request = Request()
 
     @abstractmethod
     def do_business(self):

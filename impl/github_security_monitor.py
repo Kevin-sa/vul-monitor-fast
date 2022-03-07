@@ -32,7 +32,7 @@ class GithubSecurityMonitor(Monitor):
 
         warn_result = {}
         for temp in self.github_repos:
-            resp = requests.get(url=self.url.format(user=temp.get('user', ''), repo=temp.get('repo', '')))
+            resp = self.request.request(url=self.url.format(user=temp.get('user', ''), repo=temp.get('repo', '')))
             if resp.status_code != 200:
                 logging.error("resp.status_code error:{}, user:{}, repo:{}".format(
                     resp.status_code, temp.get('user', ''), temp.get('repo', '')))
