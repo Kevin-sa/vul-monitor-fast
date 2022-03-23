@@ -1,5 +1,4 @@
 import re
-import requests
 import logging
 
 from impl.monitor import Monitor

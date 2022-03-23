@@ -7,6 +7,7 @@ import logging
 from impl.github_security_monitor import GithubSecurityMonitor
 from impl.jira_apache_monitor import JiraApacheMonitor
 from impl.oracle_monitor import OracleMonitor
+from impl.sonatype_security_monitor import SonatypeMonitor
 from impl.vmware_security_monitor import VMwareSecurityMonitor
 
 
@@ -20,7 +21,7 @@ def main():
     if check_target_network is False:
         return
     monitor_temp = [GithubCommitMonitor, GithubIssueMonitor, GithubSecurityMonitor, JiraApacheMonitor,
-                    OracleMonitor, VMwareSecurityMonitor]
+                    OracleMonitor, VMwareSecurityMonitor, SonatypeMonitor]
     for temp in monitor_temp:
         try:
             temp().execute()

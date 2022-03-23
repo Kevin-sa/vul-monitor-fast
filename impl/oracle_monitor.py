@@ -1,4 +1,3 @@
-import requests
 import logging
 from lxml import etree
 import re

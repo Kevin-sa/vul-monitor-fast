@@ -1,22 +1,24 @@
 import logging
 from lxml import etree
+import re
 import json
+import cloudscraper
 
 from impl.monitor import Monitor
 
 
-class VMwareSecurityMonitor(Monitor):
+class SonatypeMonitor(Monitor):
     """
-    监控VMware security相关公告、补丁等
+    监控oracle security相关公告、补丁等
     """
 
     def __init__(self):
         super().__init__()
-        self.url = "https://tanzu.vmware.com/security"
-        self.rule = "VMware_security_monitor"
+        self.url = "https://support.sonatype.com/hc/en-us/sections/203012668-Security-Advisories"
+        self.rule = "sonatype_monitor"
         self.history_result = []
-        self.temp_file_path = "temp/vmware_monitor.json"
-        self.host = "https://www.oracle.com"
+        self.temp_file_path = "temp/sonatype_monitor.json"
+        self.host = "https://support.sonatype.com/"
 
     def do_business(self):
         logging.info("do_business start")
@@ -24,7 +26,9 @@ class VMwareSecurityMonitor(Monitor):
             self.history_result = json.load(file)
             file.close()
         warn_result = {}
-        resp = self.request.request(url=self.url, headers=self.headers)
+
+        scraper = cloudscraper.create_scraper()
+        resp = scraper.get(self.url)
         if resp.status_code != 200:
             logging.error("resp.status_code error:{}".format(resp.status_code))
             return
@@ -40,10 +44,12 @@ class VMwareSecurityMonitor(Monitor):
 
     def get_warn_param(self, temp):
         root = etree.HTML(temp)
-        node = root.xpath("//tr/td/a")
+        node = root.xpath("//ul/li/a")
         result = []
         for i in node:
-            text = i.text.strip()
+            text = i.text
+            if re.search("(CVE)", text) is None:
+                continue
             if text in self.history_result:
                 continue
             self.history_result.append(text)
@@ -53,4 +59,4 @@ class VMwareSecurityMonitor(Monitor):
 
 
 if __name__ == "__main__":
-    VMwareSecurityMonitor().execute()
+    SonatypeMonitor().execute()

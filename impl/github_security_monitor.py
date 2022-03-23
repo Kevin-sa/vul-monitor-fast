@@ -1,6 +1,4 @@
 import json
-
-import requests
 import logging
 from lxml import etree
 

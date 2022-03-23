@@ -28,12 +28,13 @@ class Monitor(metaclass=ABCMeta):
                              {'user': 'apache', 'repo': 'commons-beanutils', 'language': 'java'},
                              {'user': 'apache', 'repo': 'beam', 'language': 'java'},
                              {'user': 'h2database', 'repo': 'h2database', 'language': 'java'},
-                             {'user': 'protocolbuffers', 'repo': 'protobuf', 'language': 'java'}
+                             {'user': 'protocolbuffers', 'repo': 'protobuf', 'language': 'java'},
+                             {'user': 'sonatype', 'repo': 'nexus-public', 'language': 'java'}
                              ]
         self.github_authorization = ""
         self.black_pattern = {
-            'common': '(security|cve-|vulnerabilities|security)',
-            'java': '(security|cve-|jndi|ldap|injection| xxe |sqli|rce |ssrf|vulnerabilities|security)'
+            'common': '(security| cve- |vulnerabilities|security)',
+            'java': '(security|cve-|jndi|ldap|injection| xxe |sqli| rce | ssrf |vulnerabilities|security)'
         }
         self.headers = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, '
                                       'like Gecko) Chrome/99.0.4844.51 Safari/537.36'}
