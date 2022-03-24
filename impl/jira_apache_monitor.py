@@ -28,7 +28,7 @@ class JiraApacheMonitor(Monitor):
             for i in range(1, 1000):
                 value = primary_conf.get(temp)
                 issue_key = "{}-{}".format(temp, value.get("id") + i)
-                resp = self.request.request(self.url.format(issueKey=issue_key))
+                resp = self.request.request(self.url.format(issueKey=issue_key), headers=self.headers)
                 if resp.status_code != 200:
                     primary_conf[temp]['id'] += i - 1
                     logging.error("resp.status_code error:{}".format(resp.status_code))

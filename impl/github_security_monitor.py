@@ -24,13 +24,16 @@ class GithubSecurityMonitor(Monitor):
         """
         logging.info("do_business start")
 
+        headers = {'Authorization': self.github_authorization}
+        headers.update(self.headers)
         with open(self.project_file + self.temp_file_path) as file:
             self.history_result = json.load(file)
             file.close()
 
         warn_result = {}
         for temp in self.github_repos:
-            resp = self.request.request(url=self.url.format(user=temp.get('user', ''), repo=temp.get('repo', '')))
+            resp = self.request.request(url=self.url.format(user=temp.get('user', ''), repo=temp.get('repo', '')),
+                                        headers=headers)
             if resp.status_code != 200:
                 logging.error("resp.status_code error:{}, user:{}, repo:{}".format(
                     resp.status_code, temp.get('user', ''), temp.get('repo', '')))

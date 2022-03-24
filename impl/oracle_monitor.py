@@ -25,7 +25,7 @@ class OracleMonitor(Monitor):
             self.history_result = json.load(file)
             file.close()
         warn_result = {}
-        resp = self.request.request(url=self.url)
+        resp = self.request.request(url=self.url, headers=self.headers)
         if resp.status_code != 200:
             logging.error("resp.status_code error:{}".format(resp.status_code))
             return

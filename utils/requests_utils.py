@@ -12,12 +12,6 @@ class Request(object):
             try:
                 if param.get("timeout", None) is None:
                     param.update({"timeout": 30})
-                if param.get("User-Agent", None) is None:
-                    param.update({
-                        "User-Agent":
-                        "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
-                        "Chrome/94.0.4606.61 Safari/537.36 "
-                    })
                 response = session.request(method="GET", url=url, **param)
                 return response
             except Exception as e:

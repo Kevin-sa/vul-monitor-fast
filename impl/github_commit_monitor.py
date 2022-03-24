@@ -22,8 +22,10 @@ class GithubCommitMonitor(Monitor):
 
         warn_result = {'rule': self.rule}
         for temp in self.github_repos:
+            headers = {'Authorization': self.github_authorization}
+            headers.update(self.headers)
             resp = self.request.request(url=self.url.format(user=temp.get('user'), repo=temp.get('repo')),
-                                        headers={'Authorization': self.github_authorization})
+                                        headers=headers)
             if resp.status_code != 200:
                 logging.error("resp.status_code error:{}, user:{}, repo:{}".format(
                     resp.status_code, temp.get('user', ''), temp.get('repo', '')))
