@@ -15,6 +15,8 @@ class Monitor(metaclass=ABCMeta):
                              {'user': 'FasterXML', 'repo': 'jackson-bom', 'language': 'java'},
                              {'user': 'mybatis', 'repo': 'mybatis-3', 'language': 'java'},
                              {'user': 'spring-projects', 'repo': 'spring-boot', 'language': 'java'},
+                             {'user': 'spring-projects', 'repo': 'spring-framework', 'language' : 'java'},
+                             {'user': 'spring-cloud', 'repo': 'spring-cloud-function', 'language': 'java'},
                              {'user': 'qos-ch', 'repo': 'logback', 'language': 'java'},
                              {'user': 'qos-ch', 'repo': 'slf4j', 'language': 'java'},
                              {'user': 'google', 'repo': 'guava', 'language': 'java'},
