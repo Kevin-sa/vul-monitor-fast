@@ -22,6 +22,13 @@ Investigating Security Releases of Open Source Packages](https://arxiv.org/pdf/2
 - security release和fix commit有4天的时间差
 - snyk和NVD公告和security release有25天的时间差
 
+## Token
+### Github
+主要用于获取关注仓库的commit、isssue、github security等信息
+[new github Token](https://github.com/settings/tokens)
+
+### Telebot
+[new telebot](https://cloud.google.com/dialogflow/es/docs/integrations/telegram?hl=zh-cn)
 
 
 ## Mac定时任务使用launchctl
