@@ -16,7 +16,7 @@ class VMwareSecurityMonitor(Monitor):
         self.rule = "VMware_security_monitor"
         self.history_result = []
         self.temp_file_path = "temp/vmware_monitor.json"
-        self.host = "https://www.oracle.com"
+        self.host = "https://tanzu.vmware.com/security"
 
     def do_business(self):
         logging.info("do_business start")
