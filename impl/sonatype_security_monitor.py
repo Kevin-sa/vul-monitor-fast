@@ -2,7 +2,6 @@ import logging
 from lxml import etree
 import re
 import json
-import cloudscraper
 
 from impl.monitor import Monitor
 
@@ -27,8 +26,7 @@ class SonatypeMonitor(Monitor):
             file.close()
         warn_result = {}
 
-        scraper = cloudscraper.create_scraper()
-        resp = scraper.get(self.url)
+        resp = self.request.scraper_get_request(self.url)
         if resp.status_code != 200:
             logging.error("resp.status_code error:{}".format(resp.status_code))
             return

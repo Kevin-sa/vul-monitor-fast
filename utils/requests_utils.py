@@ -1,5 +1,6 @@
 from requests import sessions
 import logging
+import cloudscraper
 
 
 class Request(object):
@@ -17,3 +18,11 @@ class Request(object):
             except Exception as e:
                 logging.error(f"url:{url} error:{e}")
                 return None
+
+    def scraper_get_request(self, url):
+        try:
+            scraper = cloudscraper.create_scraper()
+            return scraper.get(url)
+        except Exception as e:
+            logging.error(f"url:{url} error:{e}")
+            return None

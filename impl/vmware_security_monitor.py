@@ -16,7 +16,7 @@ class VMwareSecurityMonitor(Monitor):
         self.rule = "VMware_security_monitor"
         self.history_result = []
         self.temp_file_path = "temp/vmware_monitor.json"
-        self.host = "https://tanzu.vmware.com/security"
+        self.host = "https://tanzu.vmware.com"
 
     def do_business(self):
         logging.info("do_business start")
@@ -24,7 +24,8 @@ class VMwareSecurityMonitor(Monitor):
             self.history_result = json.load(file)
             file.close()
         warn_result = {}
-        resp = self.request.request(url=self.url, headers=self.headers)
+
+        resp = self.request.scraper_get_request(self.url)
         if resp.status_code != 200:
             logging.error("resp.status_code error:{}".format(resp.status_code))
             return
