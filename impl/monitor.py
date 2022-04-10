@@ -21,6 +21,7 @@ class Monitor(metaclass=ABCMeta):
                              {'user': 'qos-ch', 'repo': 'slf4j', 'language': 'java'},
                              {'user': 'google', 'repo': 'guava', 'language': 'java'},
                              {'user': 'apache', 'repo': 'commons-io', 'language': 'java'},
+                             {'user': 'apache', 'repo': 'tomcat', 'language': 'java'},
                              {'user': 'apache', 'repo': 'commons-logging', 'language': 'java'},
                              {'user': 'apache', 'repo': 'commons-compress', 'language': 'java'},
                              {'user': 'google', 'repo': 'gson', 'language': 'java'},
