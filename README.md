@@ -56,7 +56,7 @@ Investigating Security Releases of Open Source Packages](https://arxiv.org/pdf/2
 <!-- 标准输出文件 -->
 <key>StandardOutPath</key>
 <string></string>
-<!-- 标准错误输出文件，错误日志 -->
+<!-- 标准错误输出文件错误日志 -->
 <key>StandardErrorPath</key>
 <string></string>
 </dict>

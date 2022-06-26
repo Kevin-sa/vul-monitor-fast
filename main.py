@@ -1,14 +1,16 @@
 import requests
 
-from impl.github_commit_monitor import GithubCommitMonitor
-from impl.github_issue_monitor import GithubIssueMonitor
+from impl.paper.intigriti_bug_bytes import IntigritoBugBytes
+from impl.paper.list_of_bug_bounty_writeups import BugBountyWriteups
+from impl.vulnerability.github_commit_monitor import GithubCommitMonitor
+from impl.vulnerability.github_issue_monitor import GithubIssueMonitor
 import logging
 
-from impl.github_security_monitor import GithubSecurityMonitor
-from impl.jira_apache_monitor import JiraApacheMonitor
-from impl.oracle_monitor import OracleMonitor
-from impl.sonatype_security_monitor import SonatypeMonitor
-from impl.vmware_security_monitor import VMwareSecurityMonitor
+from impl.vulnerability.github_security_monitor import GithubSecurityMonitor
+from impl.vulnerability.jira_apache_monitor import JiraApacheMonitor
+from impl.vulnerability.oracle_monitor import OracleMonitor
+from impl.vulnerability.sonatype_security_monitor import SonatypeMonitor
+from impl.vulnerability.vmware_security_monitor import VMwareSecurityMonitor
 
 
 def main():
@@ -21,7 +23,7 @@ def main():
     if check_target_network is False:
         return
     monitor_temp = [GithubCommitMonitor, GithubIssueMonitor, GithubSecurityMonitor, JiraApacheMonitor,
-                    OracleMonitor, VMwareSecurityMonitor, SonatypeMonitor]
+                    OracleMonitor, VMwareSecurityMonitor, SonatypeMonitor, IntigritoBugBytes, BugBountyWriteups]
     for temp in monitor_temp:
         try:
             temp().execute()
