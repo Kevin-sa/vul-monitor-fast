@@ -36,7 +36,7 @@ class BugBountyWriteups(Monitor):
                 file.close()
         warn_result["rule"] = self.rule
 
-        return result
+        return warn_result
 
     def get_warn_param(self, temp):
         root = etree.HTML(temp)
