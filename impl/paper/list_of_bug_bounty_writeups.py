@@ -1,5 +1,7 @@
 import json
 import logging
+import re
+
 from lxml import etree
 
 from impl.monitor import Monitor
@@ -44,7 +46,10 @@ class BugBountyWriteups(Monitor):
         result = []
         for i in node:
             if i.text not in self.history_result:
-                data = {"text": i.text, "href": i.attrib.get("href", "")}
+                href = i.attrib.get("href", "")
+                if re.search("twitter\\.com", href):
+                    continue
+                data = {"text": i.text, "href": href}
                 self.history_result.append(i.text)
                 result.append(data)
 
