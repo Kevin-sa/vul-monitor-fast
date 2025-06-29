@@ -69,7 +69,9 @@ launchctl load -w com.kevinsa.timonitor.plist
 在```impl/supply_chain```中增加针对vscode、chrome插件的投毒监控
 - 通过爬虫方式获取插件更新
 - 获取对应存在风险func（自动触发等利用方式sink点）调用LLM做判断
-调用多个模型识别：识别结果：```vscode-chrome LLM.xlsx```
+调用多个模型识别：
+- 识别结果：```vscode-chrome LLM.xlsx```
+- 部分样本：https://github.com/Kevin-sa/vul-monitor-fast/tree/master/evil_data
 
 case1：vscode
 ```
